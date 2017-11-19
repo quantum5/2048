@@ -2,6 +2,8 @@
 My version of 2048 game, with multi-instance support, restored from
 an old high school project.
 
+![2048 Preview](https://quantum2.xyz/wp-content/uploads/2017/11/2048.png)
+
 ## Installation
 
 Run `pip install 2048`.
