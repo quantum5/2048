@@ -1,2 +1,3 @@
 # 2048
-My version of 2048 game, with multi-instance support
+My version of 2048 game, with multi-instance support, restored from
+an old high school project.

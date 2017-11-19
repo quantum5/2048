@@ -99,3 +99,10 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# PyCharm
+.idea/
+
+# 2048 save files.
+2048.*.state
+2048.score
