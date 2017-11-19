@@ -27,7 +27,7 @@ setup(
                 'restored from an old high school project.',
     keywords='2048 pygame',
     classifiers=[
-        'Development Status :: 3 - Beta',
+        'Development Status :: 4 - Beta',
         'Environment :: Win32 (MS Windows)',
         'Environment :: X11 Applications',
         'Intended Audience :: End Users/Desktop',
