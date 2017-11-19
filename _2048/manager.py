@@ -1,5 +1,3 @@
-"""Defines the Game manager."""
-
 import os
 import errno
 import itertools
