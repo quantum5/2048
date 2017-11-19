@@ -64,7 +64,7 @@ class GameManager(object):
                     self.new_game()
                 self.save_file.seek(0, os.SEEK_SET)
 
-                print 'Running as instance #%d.' % i
+                print('Running as instance #%d.' % (i,))
                 break
 
         self._worker = Thread(target=self._save_daemon)
@@ -80,7 +80,7 @@ class GameManager(object):
         # Try to create it, if can't, try to open.
         try:
             return os.open(name, os.O_CREAT | os.O_RDWR | os.O_EXCL)
-        except OSError, e:
+        except OSError as e:
             if e.errno != errno.EEXIST:
                 raise
             return os.open(name, os.O_RDWR | os.O_EXCL)
@@ -149,6 +149,7 @@ class GameManager(object):
             self.save_lock.release()
             self.score_file.close()
             self.save_file.close()
+            self.created = False
 
     __del__ = close
 

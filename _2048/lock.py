@@ -33,7 +33,7 @@ except ImportError:
 else:
     class FileLock(FileLockBase):
         def acquire(self, blocking=True):
-            msvcrt.locking(self.fd, (msvcrt.LK_NBLCK, msvcrt.LK_LOCK)[blocking], -1)
+            msvcrt.locking(self.fd, (msvcrt.LK_NBLCK, msvcrt.LK_LOCK)[blocking], 2147483647)
 
         def release(self):
-            msvcrt.locking(self.fd, msvcrt.LK_UNLCK, -1)
+            msvcrt.locking(self.fd, msvcrt.LK_UNLCK, 2147483647)

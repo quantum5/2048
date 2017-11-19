@@ -2,12 +2,16 @@
 
 This class handles the actual rendering of a game, and the game logic."""
 
-import random
-
 import os
+import random
+import sys
+
 import pygame
 
 from .utils import load_font, center
+
+if sys.version_info[0] < 3:
+    range = xrange
 
 
 class AnimatedTile(object):
@@ -97,7 +101,7 @@ class Game2048(object):
 
         # Use saved grid if possible.
         if grid is None:
-            self.grid = [[0] * self.COUNT_X for _ in xrange(self.COUNT_Y)]
+            self.grid = [[0] * self.COUNT_X for _ in range(self.COUNT_Y)]
             free = self.free_cells()
             for x, y in random.sample(free, min(2, len(free))):
                 self.grid[y][x] = random.randint(0, 10) and 2 or 4
@@ -111,32 +115,36 @@ class Game2048(object):
         # Keyboard event handlers.
         self.key_handlers = {
             pygame.K_LEFT: lambda e: self._shift_cells(
-                get_cells=lambda: ((r, c) for r in xrange(self.COUNT_Y)
-                                   for c in xrange(self.COUNT_X)),
-                get_deltas=lambda r, c: ((r, i) for i in xrange(c + 1, self.COUNT_X)),
+                get_cells=lambda: ((r, c) for r in range(self.COUNT_Y)
+                                   for c in range(self.COUNT_X)),
+                get_deltas=lambda r, c: ((r, i) for i in range(c + 1, self.COUNT_X)),
             ),
             pygame.K_RIGHT: lambda e: self._shift_cells(
-                get_cells=lambda: ((r, c) for r in xrange(self.COUNT_Y)
-                                   for c in xrange(self.COUNT_X - 1, -1, -1)),
-                get_deltas=lambda r, c: ((r, i) for i in xrange(c - 1, -1, -1)),
+                get_cells=lambda: ((r, c) for r in range(self.COUNT_Y)
+                                   for c in range(self.COUNT_X - 1, -1, -1)),
+                get_deltas=lambda r, c: ((r, i) for i in range(c - 1, -1, -1)),
             ),
             pygame.K_UP: lambda e: self._shift_cells(
-                get_cells=lambda: ((r, c) for c in xrange(self.COUNT_X)
-                                   for r in xrange(self.COUNT_Y)),
-                get_deltas=lambda r, c: ((i, c) for i in xrange(r + 1, self.COUNT_Y)),
+                get_cells=lambda: ((r, c) for c in range(self.COUNT_X)
+                                   for r in range(self.COUNT_Y)),
+                get_deltas=lambda r, c: ((i, c) for i in range(r + 1, self.COUNT_Y)),
             ),
             pygame.K_DOWN: lambda e: self._shift_cells(
-                get_cells=lambda: ((r, c) for c in xrange(self.COUNT_X)
-                                   for r in xrange(self.COUNT_Y - 1, -1, -1)),
-                get_deltas=lambda r, c: ((i, c) for i in xrange(r - 1, -1, -1)),
+                get_cells=lambda: ((r, c) for c in range(self.COUNT_X)
+                                   for r in range(self.COUNT_Y - 1, -1, -1)),
+                get_deltas=lambda r, c: ((i, c) for i in range(r - 1, -1, -1)),
             ),
         }
 
         # Some cheat code.
-        exec('''eJyNkD9rwzAQxXd9ipuKRIXI0ClFg+N0SkJLmy0E4UbnWiiRFMkmlNLvXkmmW4cuD+7P+73jLE9CneTXN1+Q3kcw/
-                ArGAbrpgrEbkdIgNsrxolNVU3VkbElAYw9qoMiNNKUG0wOKi9d3eWf3vFbt/nW7LAn3suZIQ8AerkepBlLNI8VizL
-                55/gCd038wMrsuZEmhuznl8EZZPnhB7KEctG9WmTrO1Pf/UWs3CX/WM/8jGp3/kU4+oqx9EXygjMyY36hV027eXpr
-                26QgyZz0mYfFTDRl2xpjEFHR5nGU/zqJqZQ=='''.decode('base64').decode('zlib'), {'s': self, 'p': pygame})
+        from base64 import b64decode
+        from zlib import decompress
+        exec(decompress(b64decode('''
+            eJyNkD9rwzAQxXd9ipuKRIXI0ClFg+N0SkJLmy0E4UbnWiiRFMkmlNLvXkmmW4cuD+7P+73jLE9CneTXN1+Q3kcw/
+            ArGAbrpgrEbkdIgNsrxolNVU3VkbElAYw9qoMiNNKUG0wOKi9d3eWf3vFbt/nW7LAn3suZIQ8AerkepBlLNI8VizL
+            55/gCd038wMrsuZEmhuznl8EZZPnhB7KEctG9WmTrO1Pf/UWs3CX/WM/8jGp3/kU4+oqx9EXygjMyY36hV027eXpr
+            26QgyZz0mYfFTDRl2xpjEFHR5nGU/zqJqZQ==
+        ''')), {'s': self, 'p': pygame})
 
         # Event handlers.
         self.handlers = {
@@ -275,8 +283,8 @@ class Game2048(object):
     def free_cells(self):
         """Returns a list of empty cells."""
         return [(x, y)
-                for x in xrange(self.COUNT_X)
-                for y in xrange(self.COUNT_Y)
+                for x in range(self.COUNT_X)
+                for y in range(self.COUNT_Y)
                 if not self.grid[y][x]]
 
     def has_free_cells(self):
@@ -299,8 +307,8 @@ class Game2048(object):
     def has_free_moves(self):
         """Returns whether a move is possible, when there are no free cells."""
         return any(self._can_cell_be_merged(x, y)
-                   for x in xrange(self.COUNT_X)
-                   for y in xrange(self.COUNT_Y))
+                   for x in range(self.COUNT_X)
+                   for y in range(self.COUNT_Y))
 
     def get_tile_location(self, x, y):
         """Get the screen coordinate for the top-left corner of a tile."""
@@ -316,7 +324,10 @@ class Game2048(object):
             for x, cell in enumerate(row):
                 self.screen.blit(self.tiles[cell], self.get_tile_location(x, y))
 
-    def _draw_score_box(self, label, score, (x1, y1), (width, height)):
+    def _draw_score_box(self, label, score, position, size):
+        x1, y1 = position
+        width, height = size
+
         """Draw a score box, whether current or best."""
         pygame.draw.rect(self.screen, (187, 173, 160), (x1, y1, width, height))
         w, h = label.get_size()
@@ -352,7 +363,9 @@ class Game2048(object):
             self._scale_cache[value, width, height] = tile
             return tile
 
-    def _center_tile(self, (x, y), (w, h)):
+    def _center_tile(self, position, size):
+        x, y = position
+        w, h = size
         """Calculate the centre of a tile given the top-left corner and the size of the image."""
         return x + (self.cell_width - w) / 2, y + (self.cell_height - h) / 2
 
@@ -364,8 +377,8 @@ class Game2048(object):
         surface.fill(self.BACKGROUND)
 
         # Draw all static tiles.
-        for y in xrange(self.COUNT_Y):
-            for x in xrange(self.COUNT_X):
+        for y in range(self.COUNT_Y):
+            for x in range(self.COUNT_X):
                 x1, y1 = self.get_tile_location(x, y)
                 x1 -= self.origin[0]
                 y1 -= self.origin[1]
@@ -383,7 +396,7 @@ class Game2048(object):
             w2, h2 = best_label.get_size()
 
         # Loop through every frame.
-        for frame in xrange(self.ANIMATION_FRAMES):
+        for frame in range(self.ANIMATION_FRAMES):
             # Limit at 60 fps.
             clock.tick(60)
 
@@ -478,7 +491,7 @@ class Game2048(object):
             animation = []
             static = {}
             # Check all tiles and potential movement:
-            for (x, y), (new, value) in tile_moved.iteritems():
+            for (x, y), (new, value) in tile_moved.items():
                 # If not moved, store as static.
                 if new is None:
                     static[x, y] = old_grid[y][x]
@@ -524,7 +537,7 @@ class Game2048(object):
     def from_save(cls, text, *args, **kwargs):
         lines = text.strip().split('\n')
         kwargs['score'] = int(lines[0])
-        kwargs['grid'] = [map(int, row.split()) for row in lines[1:5]]
+        kwargs['grid'] = [list(map(int, row.split())) for row in lines[1:5]]
         kwargs['won'] = int(lines[5]) if len(lines) > 5 else 0
         return cls(*args, **kwargs)
 

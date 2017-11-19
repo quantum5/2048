@@ -12,15 +12,6 @@ tempdir = tempfile.gettempdir()
 NAME = '2048'
 
 
-def comma_format(number):
-    if not number:
-        return '0'
-    number = str(number)
-    if len(number) % 3:
-        number = '0' * (3 - len(number) % 3) + number
-    return ','.join(number[i * 3:i * 3 + 3] for i in xrange(len(number) / 3)).lstrip('0')
-
-
 def center(total, size):
     return (total - size) / 2
 

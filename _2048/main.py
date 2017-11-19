@@ -17,7 +17,7 @@ def run_game(game_class=Game2048, title='2048: In Python!', data_dir=None):
         pygame.display.set_icon(game_class.icon(32))
     except pygame.error:
         # On windows, this can fail, so use GDI to draw then.
-        print 'Consider getting a newer card or drivers.'
+        print('Consider getting a newer card or drivers.')
         os.environ['SDL_VIDEODRIVER'] = 'windib'
 
     if data_dir is None:
