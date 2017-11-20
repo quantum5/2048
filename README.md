@@ -1,4 +1,5 @@
-# 2048
+# 2048 [![Build Status](https://img.shields.io/travis/quantum5/2048.svg?maxAge=43200)](https://travis-ci.org/quantum5/2048)
+
 My version of 2048 game, with multi-instance support, restored from
 an old high school project.
 
