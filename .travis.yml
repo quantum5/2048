@@ -1,0 +1,46 @@
+sudo: required
+dist: trusty
+language: python
+python:
+  - 2.7
+  - 3.4
+  - 3.5
+  - 3.6
+addons:
+  apt:
+    packages:
+    - xdotool
+    - wmctrl
+    - fluxbox
+cache:
+  directories:
+    - $HOME/.cache/pip
+before_cache:
+  - rm -f $HOME/.cache/pip/log/debug.log
+install:
+  - pip install codecov
+  - pip install -e .
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3
+  - fluxbox &
+  - sleep 3
+script:
+  - timeout -k 30s 30s coverage run --source=_2048 -m _2048 &
+  - sleep 3
+  - >
+    xdotool search '2048: In Python!' windowactivate --sync
+    key --clearmodifiers Up
+    key --clearmodifiers Down
+    key --clearmodifiers Left
+    key --clearmodifiers Right
+    key --clearmodifiers Up
+    key --clearmodifiers Down
+    key --clearmodifiers Left
+    key --clearmodifiers Right
+  - sleep 10
+  - "wmctrl -F -c '2048: In Python!'"
+  - wait %2
+after_script:
+  - codecov
