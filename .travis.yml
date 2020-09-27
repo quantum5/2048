@@ -41,6 +41,6 @@ script:
     key --clearmodifiers Right
   - sleep 10
   - "wmctrl -F -c '2048: In Python!'"
-  - wait %2
+  - wait %3
 after_script:
   - codecov
