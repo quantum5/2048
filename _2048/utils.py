@@ -1,11 +1,7 @@
 import os
 import tempfile
-import time
 
 import pygame
-
-# Accurate timer for platform.
-timer = [time.time, time.clock][os.name == 'nt']
 
 # Get the temp file dir.
 tempdir = tempfile.gettempdir()

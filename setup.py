@@ -7,7 +7,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
 
 setup(
     name='2048',
-    version='0.3.1',
+    version='0.3.3',
     packages=['_2048'],
     package_data={
         '_2048': ['*.ttf'],
@@ -37,7 +37,7 @@ setup(
         'Environment :: Win32 (MS Windows)',
         'Environment :: X11 Applications',
         'Intended Audience :: End Users/Desktop',
-        'License :: OSI Approved :: GNU Affero General Public License v3',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python',
